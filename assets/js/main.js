@@ -82,23 +82,36 @@ var theme = {
         }
     }
     ,
-    counterState: ()=>{
+    counterState: (scrollEventUpdate='')=>{
         document.querySelectorAll(".counter").forEach((function(e) {
             let t = e.getAttribute("data-count")
-              , n = parseInt(e.textContent)
-              , o = 4e3 / Math.abs(t - n)
-              , a = (e.getAttribute("data-count-by") !== null && e.getAttribute("data-count-by") !== undefined) ? parseFloat(e.getAttribute("data-count-by")) : (t >= n ? 1 : -1),
-              v = 0;
-              e.textContent = 0;
+                , n = parseInt(e.textContent)
+                , o = 1e3 / Math.abs(t - n)
+                , a = (e.getAttribute("data-count-by") !== null && e.getAttribute("data-count-by") !== undefined) ? parseFloat(e.getAttribute("data-count-by")) : (t >= n ? 1 : -1),
+                v = 0,
+                eHeight = parseInt(e.getBoundingClientRect().height),
+                eOffsetTop = parseInt(e.getBoundingClientRect().top),
+                scrolling = scrollEventUpdate === "scroll",
+                scrollStopped = scrollEventUpdate === "scrollend",
+                headerOffsetTop = document.querySelector("header").scrollHeight,
+                inView = ((eOffsetTop + (eHeight / 1.2)) <= window.innerHeight && eOffsetTop >= headerOffsetTop);
+
+            if(scrollStopped && inView && !e.classList.contains("counted")){
+                e.classList.add("counted");
+                e.textContent = 0;
+                let s = setInterval((function() {
+                            v += a,
+                            e.textContent = parseInt(v),
+                            v == t && clearInterval(s)
+                        }
+                    ), 
+                o);
+            }
             
-            console.log();
-            let s = setInterval((function() {
-                        v += a,
-                        e.textContent = parseInt(v),
-                        v == t && clearInterval(s)
-                    }
-                ), 
-            o);
+            if(!inView && e.classList.contains("counted")){
+                e.classList.remove("counted");
+                e.textContent = 0;
+            }
         }))
     }
     ,
@@ -178,15 +191,17 @@ navOffCanvasBtn.forEach((e=>{
 }
 )));
 
-let countStats = (offsetYP='') => {
-    let eOffsetTop = (offsetYP >= 0)? parseInt(offsetYP) : parseInt(window.scrollY);
-    document.querySelectorAll(".counter").forEach((function(e) {
-        // console.log(eOffsetTop);
-    }));
-}
 
 window.addEventListener("scroll", function(e){
+    // console.log(e);
     const wOffsetY = window.scrollY;
     theme.stickyHeader();
-    countStats(wOffsetY);
 });
+
+onscrollend = (e) => {
+    theme.counterState(e.type);
+}
+
+onscroll = (e) => {
+    theme.counterState(e.type);
+}
