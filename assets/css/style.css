@@ -223,9 +223,19 @@ section {
     }
 }
 
+@media (min-width: 992px) {
+    .theme-changer {
+        display: none;
+        visibility: unset;
+    }
+}
+
+
+
 @media (max-width: 991px) {
     .ed-hidden {
         display: none;
+        visibility: unset;
     }
 }
 
