@@ -217,6 +217,7 @@ section {
         padding-left: 4rem!important;
         padding-right: 4rem!important;
     }
+
     .my-xl-9 {
         margin-bottom: 5rem!important;
         margin-top: 5rem!important;
@@ -228,14 +229,45 @@ section {
         display: none;
         visibility: unset;
     }
+
+    .footer-copyright-align {
+        text-align: left;
+        justify-content: flex-start;
+        align-items: center !important;
+    }
+
+    .footer-text-align {
+        text-align: right;
+        justify-content: flex-end;
+        align-items: center !important;
+    }
 }
 
-
-
 @media (max-width: 991px) {
-    .ed-hidden {
+    .theme-changer-sm-hidden {
         display: none;
         visibility: unset;
+    }
+    .footer-copyright {
+        display: flex;
+        position: relative;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .footer-socials {
+        display: flex;
+        position: relative;
+        display: flex;
+    }
+
+    .footer-copyright,
+    .footer-text-align {
+        display: flex;
+        position: relative;
+        text-align: center !important;
+        justify-content: center !important;
+        align-items: center !important;
     }
 }
 
